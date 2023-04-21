@@ -22,9 +22,10 @@ module.exports = function (app, db, ObjectId) {
                         email,
                         fullName,
                         lastName,
-                        password
-                    }, (err, result) => {
-                        res.json(result.ops[0]);
+                        password: password.toString()
+                    }, (err, {ops}) => {
+                        delete ops[0].password;
+                        res.json(ops[0]);
                     });
                     
                 } else {
@@ -43,15 +44,14 @@ module.exports = function (app, db, ObjectId) {
     // LOG IN
     app.get('/api/authentication/login', async (req, res) => {
 
-        console.log('params', req.params)
-        const { email, password } = req.params;
+        const { email, password } = req.query;
 
         try {
 
             await db.collection('users').findOne({ email }, (err, result) => {
 
-                if (!result) {
-                    if (password == result.password) {
+                if (result) {
+                    if (password === result.password) {
                         delete result.password;
                         res.json(result);
                     } else {

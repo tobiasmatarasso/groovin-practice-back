@@ -35,6 +35,7 @@ const list = {
 }
 
 const product = {
+  category_id: '021834512435',
   itemId: '2352ojkn35o2kn3',
   img: '',
   title: '',

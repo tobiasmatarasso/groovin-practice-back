@@ -3,7 +3,6 @@ const express = require('express'),
     cors = require('cors'),
     { MongoClient } = require('mongodb'),
     { url, dbName } = require('./config/db');
-    db = require('./config/db');
 
 const app = express();
 const port = 5000;
