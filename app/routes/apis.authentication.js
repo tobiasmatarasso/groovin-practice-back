@@ -78,7 +78,7 @@ module.exports = function (app, db, ObjectId) {
 
         } catch (err) {
             console.log(err);
-            res.status(500).json({ message: 'Internal server error' });
+            res.status(500).json({ message: 'Ususrio no encontrados' });
         }
 
     });
