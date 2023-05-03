@@ -44,24 +44,37 @@ module.exports = function (app, db, ObjectId) {
     // LOG IN
     app.get('/api/authentication/login', async (req, res) => {
 
-        const { email, password } = req.query;
+        const { email, password, token } = req.query;
 
         try {
 
-            await db.collection('users').findOne({ email }, (err, result) => {
+            if(token) {
+                await db.collection('users').findOne({ token }, (err, result) => {
 
-                if (result) {
-                    if (password === result.password) {
+                    if (result) {
                         delete result.password;
                         res.json(result);
                     } else {
-                        res.status(422).json({ message: 'El usuairo o la contraseña no coinciden' });
+                        res.status(422).json({ message: 'Token invalido' });
                     }
-                } else {
-                    res.status(422).json({ message: 'No hay usuario registrados para los datos ingresados' });
-                }
+    
+                });
+            }else {
+                await db.collection('users').findOne({ email }, (err, result) => {
 
-            });
+                    if (result) {
+                        if (password === result.password) {
+                            delete result.password;
+                            res.json(result);
+                        } else {
+                            res.status(422).json({ message: 'El usuairo o la contraseña no coinciden' });
+                        }
+                    } else {
+                        res.status(422).json({ message: 'No hay usuario registrados para los datos ingresados' });
+                    }
+
+                });
+            }
 
         } catch (err) {
             console.log(err);
